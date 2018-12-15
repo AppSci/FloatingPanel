@@ -150,7 +150,7 @@ NOTE: FloatingPanelController has the custom presentation controller. If you wou
 // Add the controller and the managed views to a view controller.
 // From the second time, just call `show(animated:completion)`.
 view.addSubview(fpc.view)
-fpc.view.frame = view.bounds // MUST
+fpc.view.frame = view.bounds // Or configure Auto Layout constraints for `fpc.view`. Either is required.
 parent.addChild(fpc)
 
 // Show a floating panel to the initial position defined in your `FloatingPanelLayout` object.
