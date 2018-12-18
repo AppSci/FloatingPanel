@@ -180,7 +180,8 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
 
         // all gestures of the tracking scroll view should be recognized in parallel
         // and handle them in self.handle(panGesture:)
-        return scrollView?.gestureRecognizers?.contains(otherGestureRecognizer) ?? false
+        return NSStringFromClass(type(of: otherGestureRecognizer)).starts(with: "UV")
+            || scrollView?.gestureRecognizers?.contains(otherGestureRecognizer) ?? false
     }
 
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -205,6 +206,11 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
         if otherGestureRecognizer is UILongPressGestureRecognizer {
             return false
         }
+        
+        // Do not fail by Appsee's gesture recognizers
+        if NSStringFromClass(type(of: otherGestureRecognizer)).starts(with: "UV") {
+            return false
+        }
 
         // Do not begin any other gestures until the pan gesture fails.
         return true
@@ -214,6 +220,11 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
         guard gestureRecognizer == panGesture else { return false }
 
         log.debug("shouldRequireFailureOf", otherGestureRecognizer)
+        
+        // Do not fail Appsee's gesture recognizers
+        if NSStringFromClass(type(of: otherGestureRecognizer)).starts(with: "UV") {
+            return false
+        }
 
         // Should begin the pan gesture without waiting for the tracking scroll view's gestures.
         // `scrollView.gestureRecognizers` can contains the following gestures
