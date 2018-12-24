@@ -292,8 +292,8 @@ class FloatingPanelLayoutAdapter {
             assert(halfInset > tipInset, "Invalid half and tip insets")
         }
         if fullInset > 0 {
-            assert(middleY > topY, "Invalid insets")
-            assert(bottomY > topY, "Invalid insets")
+            assert(middleY >= topY, "Invalid insets")
+            assert(bottomY >= topY, "Invalid insets")
         }
     }
 }
